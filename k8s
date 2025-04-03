@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pipelines-python-basic
+  name: pipelines-python-basic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pipelines-python-basic
+  template:
+    metadata:
+      labels:
+        app: pipelines-python-basic
+    spec:
+      containers:
+        - image: quay.io/openshift-pipeline/python-basic:latest
+          imagePullPolicy: Always
+          name: pipelines-python-basic
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 9090
+              protocol: TCP
+          env:
+            - name: VOTING_API_SERVICE_HOST
+              value: pipelines-vote-api
+            - name: VOTING_API_SERVICE_PORT
+              value: "9000"
